@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="jsp.project.mvc.persistence.MvcDAO">
+    <!-- 제품갯수 구하기 -->
+	<select id="getProductCnt" resultType="int">
+		SELECT COUNT(*) FROM products
+	</select>
+	
+	<select id="getProductList" parameterType="map" resultType="jsp.project.mvc.vo.productVO">
+	<![CDATA[
+	SELECT *
+	FROM (SELECT product_id,product_name,product_category,kind,product_imgpath, product_price,product_stock,rownum rNum 
+	FROM (
+					SELECT *
+	 				FROM products
+	 				ORDER BY product_id DESC
+	)
+	)
+	WHERE rNum>=#{start} AND rNum<=#{end}
+	]]>
+	</select>
+
+    </mapper>
